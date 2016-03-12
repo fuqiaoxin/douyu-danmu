@@ -8,6 +8,7 @@ class ResponseParser
     const REGEX_SEVER = '/%7B%22ip%22%3A%22(.*?)%22%2C%22port%22%3A%22(.*?)%22%7D%2C/';
     const REGEX_DANMU_SERVER = '/ip@=(.*?)\/port@=(\\d*?)\//';
     const REGEX_GROUP_ID = '/type@=setmsggroup\/rid@=(\\d*?)\/gid@=(\\d*?)\//';
+    const REGEX_CHAT_DANMU = '/type@=chatmessage\/.*\/sender@=(\\d.*?)\/content@=(.*?)\/snick@=(.*?)\/.*\/rid@=(\\d*?)/';
 
     /**
      * 解析服务器信息
@@ -16,6 +17,8 @@ class ResponseParser
      */
     public static function parserServerInfo($content)
     {
+        if ('' == $content or null == $content) return '';
+
         preg_match_all(self::REGEX_SEVER, $content, $matches);
 
         //判断是否有匹配
@@ -41,6 +44,8 @@ class ResponseParser
      */
     public static function parserDanmuServer($content)
     {
+        if ('' == $content or null == $content) return '';
+
         $content = SttCode::decode(SttCode::decode($content));
         preg_match_all(self::REGEX_DANMU_SERVER, $content, $matches);
 
@@ -67,6 +72,8 @@ class ResponseParser
      */
     public static function parserGroupId($content)
     {
+        if ('' == $content or null == $content) return '';
+
         preg_match_all(self::REGEX_GROUP_ID, $content, $matches);
 
         //判断是否有匹配
@@ -75,5 +82,26 @@ class ResponseParser
         }
 
         return $matches[2][0];
+    }
+
+    /**
+     * 解析弹幕信息
+     * @param string $content 带有弹幕信息
+     * @return Danmu
+     */
+    public static function parserDanmu($content)
+    {
+        if ('' == $content or null == $content) return '';
+
+        preg_match_all(self::REGEX_CHAT_DANMU, $content, $matches);
+
+        //判断是否有匹配
+        if (empty($matches)) {
+            return false;
+        }
+
+        $danmu = new Danmu($matches[1][0], $matches[3][0], $matches[2][0]);
+
+        return $danmu;
     }
 }
