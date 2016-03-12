@@ -14,8 +14,11 @@ require_once './util/SttCode.php';
  * 应用程序执行脚本
  * @author LincolnZhou<875199116@qq.com> 2016-03-10
  */
+if (empty($argv) || ($argv && !isset($argv[1]) && is_numeric($argv[1]))) {
+    screen_print('未输入房间号');
+}
 
-define('ROOM_ID', '288016'); //房间号
+define('ROOM_ID', $argv[1]); //房间号
 define('DOUYU_URL', 'http://www.douyutv.com'); //斗鱼TV网站地址
 
 $roomUrl = DOUYU_URL . '/' . ROOM_ID;
