@@ -8,7 +8,7 @@ class ResponseParser
     const REGEX_SEVER = '/%7B%22ip%22%3A%22(.*?)%22%2C%22port%22%3A%22(.*?)%22%7D%2C/';
     const REGEX_DANMU_SERVER = '/ip@=(.*?)\/port@=(\\d*?)\//';
     const REGEX_GROUP_ID = '/type@=setmsggroup\/rid@=(\\d*?)\/gid@=(\\d*?)\//';
-    const REGEX_CHAT_DANMU = '/type@=chatmessage\/.*\/sender@=(\\d.*?)\/content@=(.*?)\/snick@=(.*?)\/.*\/rid@=(\\d*?)/';
+    const REGEX_CHAT_DANMU = '/type@=chatmsg\/rid@=(.*?)\/uid@=(.*?)\/nn@=(.*?)\/txt@=(.*?)\//';
 
     /**
      * 解析服务器信息
@@ -100,7 +100,7 @@ class ResponseParser
             return false;
         }
 
-        $danmu = new Danmu($matches[1][0], $matches[3][0], $matches[2][0]);
+        $danmu = new Danmu($matches[2][0], $matches[3][0], $matches[4][0]);
 
         return $danmu;
     }

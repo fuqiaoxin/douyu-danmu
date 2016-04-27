@@ -19,7 +19,7 @@ if (empty($argv) || ($argv && !isset($argv[1]) && is_numeric($argv[1]))) {
 }
 
 define('ROOM_ID', $argv[1]); //房间号
-define('DOUYU_URL', 'http://www.douyutv.com'); //斗鱼TV网站地址
+define('DOUYU_URL', 'http://www.douyu.com'); //斗鱼TV网站地址
 
 $roomUrl = DOUYU_URL . '/' . ROOM_ID;
 $roomHtml = Curl::request($roomUrl);
@@ -72,7 +72,8 @@ do {
     }
 
     $count++;
-    if(strpos($content, 'chatmessage')) {
+
+    if(strpos($content, 'chatmsg')) {
         $danmu = ResponseParser::parserDanmu($content);
         screen_print($danmu->getSnick() . "[" . $danmu->getUid() . "]:\t" . $danmu->getContent());
     }
